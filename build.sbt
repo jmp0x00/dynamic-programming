@@ -12,6 +12,7 @@ lazy val root = (project in file("."))
     resolvers += "Sonatype OSS Releases".at("https://oss.sonatype.org/content/repositories/releases"),
     libraryDependencies ++= Seq(
       "dev.zio"           %% "zio"        % "2.0.9",
+      "org.typelevel"     %% "cats-core"  % "2.9.0",
       "dev.zio"           %% "zio-test"   % "2.0.9"  % Test,
       "org.scalacheck"    %% "scalacheck" % "1.17.0" % Test,
       "com.storm-enroute" %% "scalameter" % "0.21"   % Benchmark,
