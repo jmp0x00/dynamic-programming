@@ -30,9 +30,13 @@ object Knapsack extends ZIOAppDefault {
     getMaxProfitRecursive(items.toArray, capacity)
 
   def getMaxProfitRecursive(items: Array[Item], capacity: Int): Int = {
+    val memoize = Array.fill[Option[Int]](items.length, capacity + 1)(None)
+
     def get(currentCapacity: Int, currentIndex: Int): Int =
       if (currentCapacity <= 0 || currentIndex >= items.length) {
         0
+      } else if (memoize(currentIndex)(currentCapacity).nonEmpty) {
+        memoize(currentIndex)(currentCapacity).get
       } else {
         val skip   = get(currentCapacity, currentIndex + 1)
         val select =
@@ -40,7 +44,8 @@ object Knapsack extends ZIOAppDefault {
             items(currentIndex).profit + get(currentCapacity - items(currentIndex).weight, currentIndex + 1)
           else
             0
-        skip.max(select)
+        memoize(currentIndex).update(currentCapacity, Some(skip max select))
+        memoize(currentIndex)(currentCapacity).get
       }
 
     get(capacity, 0)
