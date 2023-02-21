@@ -1,6 +1,4 @@
-package knapsack
-
-import knapsack.Knapsack.Item
+import Knapsack.Item
 import org.scalatest.matchers.must
 import org.scalatest.wordspec.AnyWordSpec
 

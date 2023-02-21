@@ -1,7 +1,5 @@
-package fibonacci
-
 import org.scalacheck.Prop.forAll
-import org.scalacheck._
+import org.scalacheck.{Gen, Properties}
 
 object FibonacciSpec extends Properties("Fibonacci") {
   property("fib(0) = 0") = forAll(Gen.choose(0, 0)) { n =>

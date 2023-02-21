@@ -1,7 +1,5 @@
-package knapsack
-
-import zio.{System => _, _}
-import zio.Console._
+import zio.Console.printLine
+import zio.{Task, ZIO, ZIOAppDefault}
 
 object Knapsack extends ZIOAppDefault {
 
@@ -29,7 +27,7 @@ object Knapsack extends ZIOAppDefault {
   def getMaxProfit(items: Iterable[Item], capacity: Int): Int =
     getMaxProfitRecursive(items.toArray, capacity)
 
-  def getMaxProfitRecursive(items: Array[Item], capacity: Int): Int = {
+  def getMaxProfitRecursive(items: Array[Item], capacity: Int): Int =
     if (capacity <= 0 || items.isEmpty) {
       0
     } else {
@@ -39,31 +37,28 @@ object Knapsack extends ZIOAppDefault {
         if (items(0).weight <= c)
           dp.update(c, items(0).profit)
 
-      for (i <- 1 until items.length) {
+      for (i <- 1 until items.length)
         for (c <- capacity to 1 by -1) {
           val profit1 = if (items(i).weight <= c) items(i).profit + dp(c - items(i).weight) else 0
           val profit2 = dp(c)
           dp.update(c, profit1 max profit2)
         }
-      }
 
-      //printSelectedItems(dp, items, capacity)
+      // printSelectedItems(dp, items, capacity)
 
       dp(capacity)
     }
-  }
 
   private def printSelectedItems(dp: Array[Array[Int]], items: Array[Item], capacity: Int): Unit = {
     System.out.print("Selected weights:")
     var currentCapacity = capacity
-    var totalProfit = dp(items.length - 1)(capacity)
-    for (i <- (items.length - 1) until 0 by -1) {
-      if (totalProfit != dp(i-1)(currentCapacity)) {
+    var totalProfit     = dp(items.length - 1)(capacity)
+    for (i <- items.length - 1 until 0 by -1)
+      if (totalProfit != dp(i - 1)(currentCapacity)) {
         System.out.print(" " + items(i).weight)
         currentCapacity -= items(i).weight
         totalProfit -= items(i).profit
       }
-    }
 
     if (totalProfit != 0)
       System.out.print(" " + items(0).weight)

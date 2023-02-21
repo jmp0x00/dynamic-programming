@@ -1,7 +1,5 @@
-package fibonacci
-
-import zio.Console._
-import zio._
+import zio.Console.printLine
+import zio.{Task, ZIOAppDefault}
 
 object Fibonacci extends ZIOAppDefault {
 
