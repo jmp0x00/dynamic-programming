@@ -33,26 +33,23 @@ object Knapsack extends ZIOAppDefault {
     if (capacity <= 0 || items.isEmpty) {
       0
     } else {
-      val dp = Array.ofDim[Int](2, capacity + 1)
+      val dp = Array.ofDim[Int](capacity + 1)
 
-      for (c <- 0 to capacity) {
-        if (items(0).weight <= c) {
-          dp(0).update(c, items(0).profit)
-          dp(1).update(c, items(0).profit)
-        }
-      }
+      for (c <- 0 to capacity)
+        if (items(0).weight <= c)
+          dp.update(c, items(0).profit)
 
       for (i <- 1 until items.length) {
-        for (c <- 1 to capacity) {
-          val profit1 = if (items(i).weight <= c) items(i).profit + dp((i-1)%2)(c - items(i).weight) else 0
-          val profit2 = dp((i-1)%2)(c)
-          dp(i%2).update(c, profit1 max profit2)
+        for (c <- capacity to 1 by -1) {
+          val profit1 = if (items(i).weight <= c) items(i).profit + dp(c - items(i).weight) else 0
+          val profit2 = dp(c)
+          dp.update(c, profit1 max profit2)
         }
       }
 
       //printSelectedItems(dp, items, capacity)
 
-      dp((items.length-1)%2)(capacity)
+      dp(capacity)
     }
   }
 
