@@ -16,18 +16,16 @@ object Fibonacci extends ZIOAppDefault {
     printLine(s"${n}th fibonacci is ---> ${calculate(n)}")
 
   def calculate(n: Int): Int =
-    calculateWithMemoization(n)
+    calculateWithTabulation(n)
 
   def calculateRecursive(n: Int): Int =
     if (n < 2)
       n
     else
-      calculate(n - 1) + calculate(n - 2)
+      calculateRecursive(n - 1) + calculateRecursive(n - 2)
 
-  def calculateWithMemoization(n: Int): Int =
-    calculateWithMemoizationInternal(Array.ofDim(n + 1), n)
-
-  private def calculateWithMemoizationInternal(memoize: Array[Int], n: Int): Int =
+  def calculateWithMemoization(n: Int): Int = {
+    def get(memoize: Array[Int], n: Int): Int =
       if (n < 2)
         n
       else if (memoize(n) != 0)
@@ -35,8 +33,26 @@ object Fibonacci extends ZIOAppDefault {
       else {
         memoize.update(
           n,
-          calculateWithMemoizationInternal(memoize, n - 1) + calculateWithMemoizationInternal(memoize, n - 2)
+          get(memoize, n - 1) + get(memoize, n - 2)
         )
         memoize(n)
       }
+    get(Array.ofDim(n + 1), n)
+  }
+
+  def calculateWithTabulation(n: Int): Int =
+    if (n < 2)
+      n
+    else {
+      val table: Array[Int] = Array.ofDim(n + 1)
+
+      // base cases
+      table.update(0, 0)
+      table.update(1, 1)
+
+      for (i <- 2 to n)
+        table.update(i, table(i - 2) + table(i - 1))
+
+      table(n)
+    }
 }

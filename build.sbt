@@ -22,7 +22,7 @@ lazy val root = (project in file("."))
       new TestFramework("org.scalameter.ScalaMeterFramework"),
     ),
     Benchmark / parallelExecution := false,
-    logBuffered                   := false,
+    Benchmark / logBuffered       := false,
   )
   .settings(
     inConfig(Benchmark)(Defaults.testSettings),
