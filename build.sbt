@@ -15,6 +15,7 @@ lazy val root = (project in file("."))
       "org.typelevel"     %% "cats-core"  % "2.9.0",
       "dev.zio"           %% "zio-test"   % "2.0.9"  % Test,
       "org.scalacheck"    %% "scalacheck" % "1.17.0" % Test,
+      "org.scalatest"     %% "scalatest"  % "3.2.15" % Test,
       "com.storm-enroute" %% "scalameter" % "0.21"   % Benchmark,
     ),
     testFrameworks ++= Seq(
